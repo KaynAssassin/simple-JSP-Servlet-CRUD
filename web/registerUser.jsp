@@ -10,8 +10,38 @@
 <head>
     <title>Title</title>
 </head>
+<script type="text/javascript">
+    <!--
+    function validate() {
+        if (document.myForm.userName.value == "") {
+            alert("Please enter a username!");
+            document.myForm.userName.focus();
+            return false;
+        }
+
+        if(document.myForm.lastName.value == "") {
+            alert( "Please enter a Last Name");
+            document.myForm.lastName.focus();
+            return false;
+        }
+        // for the last name we allow only letters
+        if (/[^a-z]/i.exec(document.myForm.lastName.value.toLowerCase())) {
+            alert('Please enter a valid name! Only letters are allowed.');
+            document.myForm.lastName.focus();
+            return false;
+        }
+
+        if( document.myForm.dob.value == "" ) {
+            alert( "Please enter the Birthday!");
+            document.myForm.dob.focus();
+            return false;
+        }
+        return( true );
+    }
+    //-->
+</script>
 <body>
-<form method="POST" action='UserController'>
+<form method="POST" action='UserController' name="myForm" onSubmit="return validate()">
     <input type="hidden" name="action" value="insert" />
 
     <p><b>Add a New User</b></p>
@@ -34,7 +64,7 @@
             </td>
         </tr>
         <tr>
-            <td>Birthdate</td>
+            <td>Birthday</td>
             <td><input type="date" pattern="\d{4}/\d{1,2}/\d{1,2}" name="dob" /></td>
         </tr>
         <tr>
@@ -47,7 +77,7 @@
         </tr>
         <tr>
             <td></td>
-            <td><input type="submit" value="Submit" /></td>
+            <td><input type="submit" value="Submit" /> <input type="button" onclick="history.back()" value="Cancel"/> </td>
         </tr>
     </table>
 </form>

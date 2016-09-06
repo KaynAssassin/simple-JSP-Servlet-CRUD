@@ -23,7 +23,6 @@
       </script>
   </c:if>
   <ul>
-    <%--<li><a href="displayUsers.jsp">Display Users</a></li>--%>
     <li><a href="UserController?action=list">Display Users</a> </li>
     <li><a href="registerUser.jsp">Add User</a></li>
   </ul>

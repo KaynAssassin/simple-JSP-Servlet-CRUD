@@ -1,7 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="model.User" %>
-<%@ page import="java.util.List" %>
-<%@ page import="dao.UserDAO" %>
 <%--
   Created by IntelliJ IDEA.
   User: Steve
@@ -15,11 +12,6 @@
     <title>Title</title>
 </head>
 <body>
-<%--<%--%>
-    <%--UserDAO dao = new UserDAO();--%>
-    <%--List<User> users = dao.getAllUsers();--%>
-<%--%>--%>
-
 <table>
     <thead>
     <tr>
@@ -35,18 +27,6 @@
                 <td><a href="UserController?action=view&id=<c:out value="${user.userId}"/>" target="_blank">Details</a> </td>
             </tr>
         </c:forEach>
-        <%--<tr>--%>
-        <%--<%--%>
-            <%--for (User user : users){--%>
-        <%--%>--%>
-
-        <%--<td> <%= user.getUserName() %></td>--%>
-        <%--<td><%= user.getLastName() %></td>--%>
-            <%--<td><a href="UserController?action=view&id=<%= user.getUserId() %>">Details</a> </td>--%>
-        <%--</tr>--%>
-    <%--<%--%>
-        <%--}--%>
-    <%--%>--%>
     </tbody>
 </table>
 <p><a href="index.jsp">Back</a></p>

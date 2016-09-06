@@ -9,26 +9,29 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Project 1 - User List</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body>
-<table>
-    <thead>
-    <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-    </tr>
-    </thead>
-    <tbody>
-        <c:forEach items="${users}" var="user">
-            <tr>
-                <td><c:out value="${user.userName}"/></td>
-                <td><c:out value="${user.lastName}"/></td>
-                <td><a href="UserController?action=view&id=<c:out value="${user.userId}"/>" target="_blank">Details</a> </td>
-            </tr>
-        </c:forEach>
-    </tbody>
-</table>
-<p><a href="index.jsp">Back</a></p>
+<div id="users-list">
+    <table>
+        <thead>
+        <tr>
+            <th>First Name</th>
+            <th colspan="2">Last Name</th>
+        </tr>
+        </thead>
+        <tbody>
+            <c:forEach items="${users}" var="user">
+                <tr>
+                    <td><c:out value="${user.userName}"/></td>
+                    <td><c:out value="${user.lastName}"/></td>
+                    <td><a href="UserController?action=view&id=<c:out value="${user.userId}"/>" target="_blank">Details</a> </td>
+                </tr>
+            </c:forEach>
+        </tbody>
+    </table>
+    <p><input type="button" onclick="window.location.href='/index.jsp'" value="Back" class="button"/></p>
+</div>
 </body>
 </html>

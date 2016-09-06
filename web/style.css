@@ -1,0 +1,108 @@
+#menu {
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+#menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 200px;
+    background-color: #9DC45F;
+}
+
+#menu li a {
+    display: block;
+    color: #000;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+#menu li a:hover {
+    background-color: #80A24A;
+}
+
+#container{
+    width: 90%;
+    max-width: 800px;
+    min-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    background: #F8F8F8;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+#container h1{
+    font: 24px "Trebuchet MS", Arial, Helvetica, sans-serif;
+    padding: 20px 0 20px 40px;
+    text-shadow: 1px 1px 1px #949494;
+    background: #9DC45F;
+    border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+    -moz-border-radius: 5px 5px 0 0;
+    margin: -10px -10px 10px -10px;
+}
+#users-list{
+    width: 90%;
+    max-width: 800px;
+    min-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    background: #F8F8F8;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+}
+table{
+    width: 100%;
+    border-spacing: 0;
+}
+th, td {
+    padding: 15px;
+    text-align: left;
+}
+th {
+    background-color: #9DC45F;
+}
+tr{
+    line-height: 10px;
+}
+#container input[type="text"], input[type="date"], select{
+    color: #555;
+    height: 30px;
+    line-height:15px;
+    padding: 0 0 0 10px;
+    margin-top: 2px;
+    border: 1px solid #E5E5E5;
+    background: #FBFBFB;
+    -webkit-box-shadow: inset 1px 1px 2px rgba(238, 238, 238, 0.2);
+    box-shadow: inset 1px 1px 2px rgba(238, 238, 238, 0.2);
+    width: 100%;
+}
+#container textarea{
+    height:100px;
+    padding-top: 10px;
+    border: 1px solid #E5E5E5;
+    background: #FBFBFB;
+    width: 100%;
+    -webkit-box-shadow: inset 1px 1px 2px rgba(238, 238, 238, 0.2);
+    box-shadow: inset 1px 1px 2px rgba(238, 238, 238, 0.2);
+}
+.button{
+    background-color: #9DC45F;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-border-radius: 5px;
+    border: none;
+    color: #FFF;
+    text-shadow: 1px 1px 1px #949494;
+    padding: 10px 25px 10px 25px;
+}
+.button:hover {
+    background-color:#80A24A;
+}

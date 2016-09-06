@@ -9,7 +9,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
   <head>
-    <title>$Title$</title>
+    <title>Project 1</title>
+      <link rel="stylesheet" href="style.css" type="text/css">
   </head>
   <body>
   <c:if test="${insertStatus == 'success'}">
@@ -22,9 +23,11 @@
           alert('Failed to insert new user!');
       </script>
   </c:if>
-  <ul>
-    <li><a href="UserController?action=list">Display Users</a> </li>
-    <li><a href="registerUser.jsp">Add User</a></li>
-  </ul>
+  <div id="menu">
+      <ul>
+        <li><a href="UserController?action=list">Display Users</a> </li>
+        <li><a href="registerUser.jsp">Add User</a></li>
+      </ul>
+  </div>
   </body>
 </html>

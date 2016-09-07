@@ -31,6 +31,7 @@
             </c:forEach>
         </tbody>
     </table>
+    <div class="counter">There are <c:out value="${numOfEntries}"/> users.</div>
     <p><input type="button" onclick="window.location.href='/index.jsp'" value="Back" class="button"/></p>
 </div>
 </body>

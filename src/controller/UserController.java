@@ -40,6 +40,7 @@ public class UserController extends HttpServlet {
         } else if (action.equalsIgnoreCase("list")){
             List<User> users = userDAO.getAllUsers();
             req.setAttribute("users", users);
+            req.setAttribute("numOfEntries", userDAO.getNumberOfEnrties());
 
             RequestDispatcher view = req.getRequestDispatcher("/displayUsers.jsp");
             view.forward(req, resp);

@@ -84,6 +84,23 @@ public class UserDAO {
         return Users;
     }
 
+    public int getNumberOfEnrties(){
+        int number_of_entries = 0;
+        try {
+            Statement statement = con.createStatement();
+            ResultSet resultSet = statement.executeQuery( "select count(*) from users" );
+
+            while( resultSet.next() ) {
+                number_of_entries = resultSet.getInt(1);
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return number_of_entries;
+    }
+
     /*
     Returns user specified by id
      */

@@ -17,8 +17,9 @@
     <table>
         <thead>
         <tr>
-            <th>First Name</th>
-            <th colspan="2">Last Name</th>
+            <th width="40%">First Name</th>
+            <th colspan="2" width="80%">Last Name</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -27,6 +28,7 @@
                     <td><c:out value="${user.userName}"/></td>
                     <td><c:out value="${user.lastName}"/></td>
                     <td><a href="UserController?action=view&id=<c:out value="${user.userId}"/>" target="_blank">Details</a> </td>
+                    <td><a href="UserController?action=edit&id=<c:out value="${user.userId}"/>" target="_blank">Edit</a> </td>
                 </tr>
             </c:forEach>
         </tbody>

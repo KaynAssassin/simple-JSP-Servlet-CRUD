@@ -59,6 +59,61 @@ public class UserDAO {
     }
 
     /*
+    updates user with new data
+     */
+    public int updateUser(User user){
+        int result1=0;
+        int result2=0;
+
+        // get addressId from user table
+        int addressId = 0;
+        try{
+            PreparedStatement ps = con.prepareStatement("select address " +
+                    "from users join address on users.address = address.addressId " +
+                    "where userId = ?");
+            ps.setInt(1, user.getUserId());
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            addressId = rs.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // update address table
+        String addressQuery = "update address set workAddress=?, homeAddress=? where addressId=?";
+        try{
+            PreparedStatement ps = con.prepareStatement(addressQuery);
+            ps.setString(1, user.getWorkAddress());
+            ps.setString(2, user.getHomeAddress());
+            ps.setInt(3, addressId);
+            result1 = ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // update user table
+        String query = "update users set userName = ?, lastName = ?, gender = ?, dob = ? " +
+                "where userId = ? ";
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.setString(1, user.getUserName());
+            preparedStatement.setString(2, user.getLastName());
+            preparedStatement.setString(3, user.getGender());
+            preparedStatement.setDate(4, new java.sql.Date(user.getDob().getTime()));
+            preparedStatement.setInt(5, user.getUserId());
+            result2 = preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        //if user has been updated successfully return 1
+        if (result1 !=0 && result2 !=0)
+            return 1;
+        else
+            return 0;
+    }
+
+    /*
     Retrieves all users from the database
      */
     public List<User> getAllUsers() {

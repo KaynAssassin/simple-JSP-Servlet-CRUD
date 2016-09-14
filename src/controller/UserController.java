@@ -34,6 +34,7 @@ public class UserController extends HttpServlet {
             int user_id = Integer.parseInt(req.getParameter("id"));
             User user = userDAO.getUserById(user_id);
             req.setAttribute("user", user);
+            req.setAttribute("mode", "view"); // flag to open user details page in view mode
 
             RequestDispatcher view = req.getRequestDispatcher("/userDetails.jsp");
             view.forward(req, resp);
@@ -44,13 +45,21 @@ public class UserController extends HttpServlet {
 
             RequestDispatcher view = req.getRequestDispatcher("/displayUsers.jsp");
             view.forward(req, resp);
+        } else if (action.equalsIgnoreCase("edit")){
+            int user_id = Integer.parseInt(req.getParameter("id"));
+            User user = userDAO.getUserById(user_id);
+            req.setAttribute("user", user);
+            req.setAttribute("mode", "edit"); // flag to open user details page in edit mode
+
+            RequestDispatcher view = req.getRequestDispatcher("/userDetails.jsp");
+            view.forward(req, resp);
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
-        if (action.equalsIgnoreCase("insert")) {
+
             User user = new User();
             user.setUserName(req.getParameter("userName"));
             user.setLastName(req.getParameter("lastName"));
@@ -67,13 +76,27 @@ public class UserController extends HttpServlet {
             user.setWorkAddress(req.getParameter("workAddress"));
             user.setHomeAddress(req.getParameter("homeAddress"));
 
-            if (userDAO.addUser(user) !=0)
-                req.setAttribute("insertStatus", "success");
-            else
-                req.setAttribute("insertStatus", "fail");
 
-            RequestDispatcher view = req.getRequestDispatcher("/index.jsp");
-            view.forward(req, resp);
-        }
+            if (action.equalsIgnoreCase("insert")){
+                if (userDAO.addUser(user) !=0)
+                    req.setAttribute("insertStatus", "success");
+                else
+                    req.setAttribute("insertStatus", "fail");
+
+                RequestDispatcher view = req.getRequestDispatcher("/index.jsp");
+                view.forward(req, resp);
+
+            } else if (action.equalsIgnoreCase("edit")){
+                String user_id = req.getParameter("user_id");
+                user.setUserId(Integer.parseInt(user_id));
+
+                if (userDAO.updateUser(user) !=0)
+                    req.setAttribute("updateMessage", "User has been updated successfully!");
+                else
+                    req.setAttribute("updateMessage", "Failed to update user.");
+
+                RequestDispatcher view = req.getRequestDispatcher("/status.jsp");
+                view.forward(req, resp);
+            }
     }
 }

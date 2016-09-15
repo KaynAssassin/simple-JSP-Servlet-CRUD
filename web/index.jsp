@@ -26,7 +26,7 @@
   <div id="menu">
       <ul>
         <li><a href="UserController?action=list">Display Users</a> </li>
-        <li><a href="registerUser.jsp">Add User</a></li>
+        <li><a href="user.jsp?action=register">Add User</a></li>
       </ul>
   </div>
   </body>

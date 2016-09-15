@@ -46,26 +46,29 @@
 <div id="container">
     <h1>User Details</h1>
     <form method="POST" action='UserController' name="myForm" onSubmit="return validate()">
-        <c:if test="${mode == 'edit'}">
+        <c:if test="${action == 'edit'}">
             <input type="hidden" name="action" value="edit" />
             <input type="hidden" name="user_id" value="<c:out value="${user.userId}" />" />
+        </c:if>
+        <c:if test="${param.action == 'register'}">
+            <input type="hidden" name="action" value="insert" />
         </c:if>
     <table>
         <tr>
             <td>First Name</td>
             <td><input type="text" name="userName" value="<c:out value="${user.userName}" />"
-                       <c:if test="${mode == 'view'}"> readonly </c:if> />
+                       <c:if test="${action == 'view'}"> readonly </c:if> />
             </td>
         </tr>
         <tr>
             <td>Last Name</td>
             <td><input type="text" name="lastName" value="<c:out value="${user.lastName}" />"
-                    <c:if test="${mode == 'view'}"> readonly </c:if> />
+                    <c:if test="${action == 'view'}"> readonly </c:if> />
             </td>
         </tr>
         <tr>
             <td>Gender</td>
-            <td><c:if test="${mode == 'view'}">
+            <td><c:if test="${action == 'view'}">
                     <select name="gender">
                         <option value="m" <c:if test="${user.gender == 'm'}"> selected</c:if><c:if test="${user.gender == 'f'}"> disabled</c:if>>
                             Male
@@ -75,7 +78,7 @@
                         </option>
                     </select>
                 </c:if>
-                <c:if test="${mode == 'edit'}">
+                <c:if test="${action == 'edit'}">
                     <select name="gender">
                         <option value="m" <c:if test="${user.gender == 'm'}"> selected</c:if>>
                             Male
@@ -85,28 +88,42 @@
                         </option>
                     </select>
                 </c:if>
+                <c:if test="${param.action == 'register'}">
+                    <select name="gender">
+                        <option value="m">Male</option>
+                        <option value="f">Female</option>
+                    </select>
+                </c:if>
             </td>
         </tr>
         <tr>
             <td>Birthdate</td>
             <td><input type="date" pattern="\d{4}/\d{1,2}/\d{1,2}" name="dob" value="<c:out value="${user.dob}"/>"
-                    <c:if test="${mode == 'view'}"> readonly </c:if> />
+                    <c:if test="${action == 'view'}"> readonly </c:if> />
             </td>
         </tr>
         <tr>
             <td>Work Address</td>
-            <td><textarea name="workAddress" rows="3" cols="40" <c:if test="${mode == 'view'}">readonly</c:if>><c:out value="${user.workAddress}"/></textarea>
+            <td><textarea name="workAddress" rows="3" cols="40" <c:if test="${action == 'view'}">readonly</c:if>><c:out value="${user.workAddress}"/></textarea>
             </td>
         </tr>
         <tr>
             <td>Home Address</td>
-            <td><textarea name="homeAddress" rows="3" cols="40" <c:if test="${mode == 'view'}">readonly</c:if>><c:out value="${user.homeAddress}"/></textarea>
+            <td><textarea name="homeAddress" rows="3" cols="40" <c:if test="${action == 'view'}">readonly</c:if>><c:out value="${user.homeAddress}"/></textarea>
             </td>
         </tr>
-        <c:if test="${mode == 'edit'}">
+        <c:if test="${action == 'edit'}">
             <tr>
                 <td></td>
                 <td><input type="submit" value="Save" class="button"></td>
+            </tr>
+        </c:if>
+        <c:if test="${param.action == 'register'}">
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Save" class="button">
+                    <input type="button" onclick="history.back()" value="Cancel" class="button"/>
+                </td>
             </tr>
         </c:if>
     </table>

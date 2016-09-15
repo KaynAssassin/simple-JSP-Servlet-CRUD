@@ -34,24 +34,24 @@ public class UserController extends HttpServlet {
             int user_id = Integer.parseInt(req.getParameter("id"));
             User user = userDAO.getUserById(user_id);
             req.setAttribute("user", user);
-            req.setAttribute("mode", "view"); // flag to open user details page in view mode
+            req.setAttribute("action", "view"); // flag to open user details page in view mode
 
-            RequestDispatcher view = req.getRequestDispatcher("/userDetails.jsp");
+            RequestDispatcher view = req.getRequestDispatcher("/user.jsp");
             view.forward(req, resp);
         } else if (action.equalsIgnoreCase("list")){
             List<User> users = userDAO.getAllUsers();
             req.setAttribute("users", users);
             req.setAttribute("numOfEntries", userDAO.getNumberOfEnrties());
 
-            RequestDispatcher view = req.getRequestDispatcher("/displayUsers.jsp");
+            RequestDispatcher view = req.getRequestDispatcher("/userlist.jsp");
             view.forward(req, resp);
         } else if (action.equalsIgnoreCase("edit")){
             int user_id = Integer.parseInt(req.getParameter("id"));
             User user = userDAO.getUserById(user_id);
             req.setAttribute("user", user);
-            req.setAttribute("mode", "edit"); // flag to open user details page in edit mode
+            req.setAttribute("action", "edit"); // flag to open user details page in edit mode
 
-            RequestDispatcher view = req.getRequestDispatcher("/userDetails.jsp");
+            RequestDispatcher view = req.getRequestDispatcher("/user.jsp");
             view.forward(req, resp);
         }
     }

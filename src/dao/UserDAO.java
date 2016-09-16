@@ -19,81 +19,55 @@ public class UserDAO {
     }
 
     /*
-    Adds a new user to the database
+    Adds a new user to the database.
+    Returns 1 if it was successful or 0 if it failed.
      */
     public int addUser(User user){
-        int result1=0;
-        int result2=0;
+        int success=0;
 
         try{
-            int last_inserted_id = 0;
-
-            String addressQuery = "insert into address (workAddress, homeAddress) values (?,?);";
-            PreparedStatement preparedStatement1 = con.prepareStatement(addressQuery, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement1.setString(1, user.getWorkAddress());
-            preparedStatement1.setString(2, user.getHomeAddress());
-            result1 = preparedStatement1.executeUpdate();
-            // we get the id of the last inserted row
-            ResultSet rs = preparedStatement1.getGeneratedKeys();
-            if (rs.next()){
-                last_inserted_id = rs.getInt(1);
-            }
-            preparedStatement1.close();
-
-            String query = "insert into users (userName, lastName, gender, dob, address) values (?,?,?,?,?);";
-            PreparedStatement preparedStatement = con.prepareStatement(query);
+            int last_inserted_id;
+            // insert into users table
+            String query = "insert into users (userName, lastName, gender, dob) values (?,?,?,?);";
+            PreparedStatement preparedStatement = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, user.getUserName());
             preparedStatement.setString(2, user.getLastName());
             preparedStatement.setString(3, user.getGender());
             preparedStatement.setDate(4, new java.sql.Date(user.getDob().getTime())); // convert util.date to sql.date
-            preparedStatement.setInt(5, last_inserted_id);
-            result2 = preparedStatement.executeUpdate();
+            preparedStatement.executeUpdate();
+
+            // get the id of the last inserted row
+            ResultSet rs = preparedStatement.getGeneratedKeys();
+            if (rs.next()){
+                last_inserted_id = rs.getInt(1);
+                // insert into address table
+                String addressQuery = "insert into address (userId, workAddress, homeAddress) values (?,?,?);";
+                PreparedStatement preparedStatement2 = con.prepareStatement(addressQuery, Statement.RETURN_GENERATED_KEYS);
+                preparedStatement2.setInt(1, last_inserted_id);
+                preparedStatement2.setString(2, user.getWorkAddress());
+                preparedStatement2.setString(3, user.getHomeAddress());
+                success = preparedStatement2.executeUpdate();
+                preparedStatement2.close();
+            }
             preparedStatement.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        if (result1 !=0 && result2 !=0)
-            return 1;
-        else
-            return 0;
+
+        return success;
     }
 
     /*
-    updates user with new data
+    Updates user with new data.
+    Returns 1 if it was successful or 0 if it failed.
      */
     public int updateUser(User user){
-        int result1=0;
-        int result2=0;
-
-        // get addressId from user table
-        int addressId = 0;
-        try{
-            PreparedStatement ps = con.prepareStatement("select address " +
-                    "from users join address on users.address = address.addressId " +
-                    "where userId = ?");
-            ps.setInt(1, user.getUserId());
-            ResultSet rs = ps.executeQuery();
-            rs.next();
-            addressId = rs.getInt(1);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        // update address table
-        String addressQuery = "update address set workAddress=?, homeAddress=? where addressId=?";
-        try{
-            PreparedStatement ps = con.prepareStatement(addressQuery);
-            ps.setString(1, user.getWorkAddress());
-            ps.setString(2, user.getHomeAddress());
-            ps.setInt(3, addressId);
-            result1 = ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        int success = 0;
 
         // update user table
         String query = "update users set userName = ?, lastName = ?, gender = ?, dob = ? " +
-                "where userId = ? ";
+                       "where userId = ? ";
         try {
             PreparedStatement preparedStatement = con.prepareStatement(query);
             preparedStatement.setString(1, user.getUserName());
@@ -101,20 +75,24 @@ public class UserDAO {
             preparedStatement.setString(3, user.getGender());
             preparedStatement.setDate(4, new java.sql.Date(user.getDob().getTime()));
             preparedStatement.setInt(5, user.getUserId());
-            result2 = preparedStatement.executeUpdate();
+            if (preparedStatement.executeUpdate() !=0){
+                // update address table
+                String addressQuery = "update address set workAddress=?, homeAddress=? where userId=?";
+                PreparedStatement ps = con.prepareStatement(addressQuery);
+
+                ps.setString(1, user.getWorkAddress());
+                ps.setString(2, user.getHomeAddress());
+                ps.setInt(3, user.getUserId());
+                success = ps.executeUpdate();
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        //if user has been updated successfully return 1
-        if (result1 !=0 && result2 !=0)
-            return 1;
-        else
-            return 0;
+        return success;
     }
 
     /*
-    Retrieves all users from the database
+    Retrieves all users from the database.
      */
     public List<User> getAllUsers() {
         List<User> Users = new ArrayList<>();
@@ -139,6 +117,9 @@ public class UserDAO {
         return Users;
     }
 
+    /*
+    Returns the number of users.
+     */
     public int getNumberOfEnrties(){
         int number_of_entries = 0;
         try {
@@ -157,21 +138,22 @@ public class UserDAO {
     }
 
     /*
-    Returns user specified by id
+    Returns user specified by id.
      */
     public User getUserById(int UserId) {
         User user = new User();
         try {
-            String query =  "select userId, userName, lastName, gender, dob, workAddress, homeAddress " +
-                            "from users join address on users.address = address.addressId " +
-                            "where userId=?;";
+            String query =  "select users.userId, users.userName, users.lastName, users.gender, users.dob, " +
+                            "address.workAddress, address.homeAddress " +
+                            "from users join address on users.userId = address.userId " +
+                            "where users.userId=?;";
             PreparedStatement preparedStatement = con.prepareStatement( query );
             preparedStatement.setInt(1, UserId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while( resultSet.next() ) {
                 user.setUserId( resultSet.getInt( "userId" ) );
                 user.setUserName( resultSet.getString( "userName" ) );
-                user.setLastName( resultSet.getString( "LastName" ) );
+                user.setLastName( resultSet.getString( "lastName" ) );
                 user.setGender( resultSet.getString( "gender" ) );
                 user.setDob( resultSet.getDate( "dob" ) );
                 user.setWorkAddress(resultSet.getString("workAddress"));
@@ -185,6 +167,10 @@ public class UserDAO {
         return user;
     }
 
+    /*
+    Deletes the specified user.
+    Returns 1 if it was successful or 0 if it failed.
+     */
     public int deleteUser(int userId){
         int rows_affected = 0;
 

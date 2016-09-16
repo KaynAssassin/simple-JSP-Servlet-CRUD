@@ -112,3 +112,9 @@ tr{
     background: #E5E5E0;
     text-align: center;
 }
+.message{
+    color: white;
+    background-color: #C9E996;
+    text-align: center;
+    margin-bottom: 5px;
+}

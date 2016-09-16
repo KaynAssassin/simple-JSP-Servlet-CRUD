@@ -14,7 +14,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static java.lang.System.out;
 
 /**
  * Created by Steve on 02-Sep-16.
@@ -39,12 +38,7 @@ public class UserController extends HttpServlet {
             RequestDispatcher view = req.getRequestDispatcher("/user.jsp");
             view.forward(req, resp);
         } else if (action.equalsIgnoreCase("list")){
-            List<User> users = userDAO.getAllUsers();
-            req.setAttribute("users", users);
-            req.setAttribute("numOfEntries", userDAO.getNumberOfEnrties());
-
-            RequestDispatcher view = req.getRequestDispatcher("/userlist.jsp");
-            view.forward(req, resp);
+            loadAllUsers(req, resp, null);
         } else if (action.equalsIgnoreCase("edit")){
             int user_id = Integer.parseInt(req.getParameter("id"));
             User user = userDAO.getUserById(user_id);
@@ -53,6 +47,15 @@ public class UserController extends HttpServlet {
 
             RequestDispatcher view = req.getRequestDispatcher("/user.jsp");
             view.forward(req, resp);
+        } else if (action.equalsIgnoreCase("delete")){
+            int user_id = Integer.parseInt(req.getParameter("id"));
+            if (userDAO.deleteUser(user_id) !=0 ){
+                //success
+                loadAllUsers(req, resp, "User has been deleted successfully.");
+            } else {
+                //fail
+                loadAllUsers(req, resp, "Failed to delete user.");
+            }
         }
     }
 
@@ -98,5 +101,21 @@ public class UserController extends HttpServlet {
                 RequestDispatcher view = req.getRequestDispatcher("/status.jsp");
                 view.forward(req, resp);
             }
+    }
+
+    private void loadAllUsers(HttpServletRequest req, HttpServletResponse resp, String message){
+        List<User> users = userDAO.getAllUsers();
+        req.setAttribute("users", users);
+        req.setAttribute("numOfEntries", userDAO.getNumberOfEnrties());
+        req.setAttribute("message", message);
+
+        RequestDispatcher view = req.getRequestDispatcher("/userlist.jsp");
+        try {
+            view.forward(req, resp);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

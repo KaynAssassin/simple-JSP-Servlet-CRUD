@@ -184,4 +184,20 @@ public class UserDAO {
         }
         return user;
     }
+
+    public int deleteUser(int userId){
+        int rows_affected = 0;
+
+        try{
+            String query = "delete from users where userId=?;";
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.setInt(1, userId);
+            rows_affected = preparedStatement.executeUpdate();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return rows_affected;
+    }
+
 }

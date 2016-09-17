@@ -9,7 +9,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
-    <title>Project 1 - User Details></title>
+    <title>Project 1 - User Details</title>
     <link rel="stylesheet" href="style.css" type="text/css">
     <script type="text/javascript">
         <!--
@@ -112,13 +112,7 @@
             <td><textarea name="homeAddress" rows="3" cols="40" <c:if test="${action == 'view'}">readonly</c:if>><c:out value="${user.homeAddress}"/></textarea>
             </td>
         </tr>
-        <c:if test="${action == 'edit'}">
-            <tr>
-                <td></td>
-                <td><input type="submit" value="Save" class="button"></td>
-            </tr>
-        </c:if>
-        <c:if test="${param.action == 'register'}">
+        <c:if test="${action == 'edit' || param.action == 'register'}">
             <tr>
                 <td></td>
                 <td><input type="submit" value="Save" class="button">

@@ -63,44 +63,40 @@ public class UserController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
 
-            User user = new User();
-            user.setUserName(req.getParameter("userName"));
-            user.setLastName(req.getParameter("lastName"));
-            user.setGender(req.getParameter("gender"));
-            String dobStr = req.getParameter("dob");
-            // convert date string to Date
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            try {
-                Date dob = sdf.parse(dobStr);
-                user.setDob(dob);
-            } catch (ParseException pe) {
-                pe.printStackTrace();
-            }
-            user.setWorkAddress(req.getParameter("workAddress"));
-            user.setHomeAddress(req.getParameter("homeAddress"));
+        User user = new User();
+        user.setUserName(req.getParameter("userName"));
+        user.setLastName(req.getParameter("lastName"));
+        user.setGender(req.getParameter("gender"));
+        String dobStr = req.getParameter("dob");
+        // convert date string to Date
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date dob = sdf.parse(dobStr);
+            user.setDob(dob);
+        } catch (ParseException pe) {
+            pe.printStackTrace();
+        }
+        user.setWorkAddress(req.getParameter("workAddress"));
+        user.setHomeAddress(req.getParameter("homeAddress"));
 
+        if (action.equalsIgnoreCase("insert")){
+            if (userDAO.addUser(user) !=0)
+                req.setAttribute("message", "A new user has been added!");
+            else
+                req.setAttribute("message", "Failed to add new user.");
 
-            if (action.equalsIgnoreCase("insert")){
-                if (userDAO.addUser(user) !=0)
-                    req.setAttribute("insertStatus", "success");
-                else
-                    req.setAttribute("insertStatus", "fail");
+            RequestDispatcher view = req.getRequestDispatcher("/index.jsp");
+            view.forward(req, resp);
 
-                RequestDispatcher view = req.getRequestDispatcher("/index.jsp");
-                view.forward(req, resp);
+        } else if (action.equalsIgnoreCase("edit")){
+            String user_id = req.getParameter("user_id");
+            user.setUserId(Integer.parseInt(user_id));
 
-            } else if (action.equalsIgnoreCase("edit")){
-                String user_id = req.getParameter("user_id");
-                user.setUserId(Integer.parseInt(user_id));
-
-                if (userDAO.updateUser(user) !=0)
-                    req.setAttribute("updateMessage", "User has been updated successfully!");
-                else
-                    req.setAttribute("updateMessage", "Failed to update user.");
-
-                RequestDispatcher view = req.getRequestDispatcher("/status.jsp");
-                view.forward(req, resp);
-            }
+            if (userDAO.updateUser(user) !=0)
+                loadAllUsers(req, resp, "User has been updated successfully!");
+            else
+                loadAllUsers(req, resp, "Failed to update user.");
+        }
     }
 
     private void loadAllUsers(HttpServletRequest req, HttpServletResponse resp, String message){

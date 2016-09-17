@@ -15,16 +15,23 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script>
     $(document).ready(function(){
+
+        $(".selectme").click(function () {
+          var user_id = $(this).attr("data-userid");
+          window.open('UserController?action=view&id=' + user_id,'_blank');
+        });
+
         var fade_out = function(){
             $(".message").fadeOut(3000);
         };
 
-        setTimeout(fade_out, 5000);
+        setTimeout(fade_out, 3000);
     });
 </script>
 <body>
+<div class="message">${message}</div>
 <div id="users-list">
-    <div class="message">${message}</div>
+
     <table>
         <thead>
         <tr>
@@ -36,10 +43,10 @@
         <tbody>
             <c:forEach items="${users}" var="user">
                 <tr>
-                    <td><c:out value="${user.userName}"/></td>
-                    <td><c:out value="${user.lastName}"/></td>
-                    <td><a href="UserController?action=view&id=<c:out value="${user.userId}"/>" target="_blank">Details</a> </td>
-                    <td><a href="UserController?action=edit&id=<c:out value="${user.userId}"/>" target="_blank">Edit</a> </td>
+                    <td class="selectme" data-userid = "<c:out value="${user.userId}"/>"><c:out value="${user.userName}"/></td>
+                    <td class="selectme" data-userid = "<c:out value="${user.userId}"/>"><c:out value="${user.lastName}"/></td>
+                    <td><a href="UserController?action=view&id=<c:out value="${user.userId}"/>" target="_blank" id="details">Details</a> </td>
+                    <td><a href="UserController?action=edit&id=<c:out value="${user.userId}"/>">Edit</a> </td>
                     <td><a href="UserController?action=delete&id=<c:out value="${user.userId}"/>" onclick="return confirm('Are you sure?')">Delete</a> </td>
                 </tr>
             </c:forEach>

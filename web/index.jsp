@@ -12,17 +12,17 @@
     <title>Project 1</title>
       <link rel="stylesheet" href="style.css" type="text/css">
   </head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      var fade_out = function(){
+        $(".message").fadeOut(3000);
+      };
+      setTimeout(fade_out, 3000);
+    })
+  </script>
   <body>
-  <c:if test="${insertStatus == 'success'}">
-      <script>
-          alert('User has been added succefully!');
-      </script>
-  </c:if>
-  <c:if test="${insertStatus == 'fail'}">
-      <script>
-          alert('Failed to insert new user!');
-      </script>
-  </c:if>
+  <div class="message">${message}</div>
   <div id="menu">
       <ul>
         <li><a href="UserController?action=list">Display Users</a> </li>

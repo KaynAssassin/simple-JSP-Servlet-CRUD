@@ -15,6 +15,7 @@ CREATE TABLE Users (
 	workAddress varchar(100) DEFAULT NULL,
   homeAddress varchar(100) DEFAULT NULL,
   FOREIGN KEY (userId) REFERENCES Users(userId)
+  ON DELETE CASCADE
 );
 
  
